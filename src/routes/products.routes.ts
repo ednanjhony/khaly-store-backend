@@ -7,6 +7,8 @@ import uploadConfig from '../config/upload';
 import CreateProductService from '../services/CreateProductService';
 import Product from '../models/Product';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 const productsRouter = Router();
 
 const upload = multer(uploadConfig);
@@ -19,7 +21,7 @@ productsRouter.get('/', async (request, response) => {
   return response.json(products);
 });
 
-productsRouter.post('/', async (request, response) => {
+productsRouter.post('/', ensureAuthenticated, async (request, response) => {
   try {
     const {
       name,
@@ -45,7 +47,7 @@ productsRouter.post('/', async (request, response) => {
   }
 });
 
-productsRouter.patch('/avatar', upload.single('avatar'), async (request, response) => {
+productsRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async (request, response) => {
   return response.json({ ok: true })
 });
 

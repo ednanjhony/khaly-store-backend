@@ -4,9 +4,11 @@ import { getRepository } from 'typeorm';
 import CreateUserService from '../services/CreateUserService';
 import User from '../models/User';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 const usersRouter = Router();
 
-usersRouter.get('/', async (request, response) => {
+usersRouter.get('/', ensureAuthenticated, async (request, response) => {
   const usersRepository = getRepository(User);
 
   const users = await usersRepository.find();
